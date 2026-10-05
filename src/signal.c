@@ -2,10 +2,12 @@
 
 void signal_handle_calculation(SemaphoreHandle_t request, SemaphoreHandle_t response, struct signal_data *data)
 {
-    return;
+    xSemaphoreTake(request, portMAX_DELAY);
+    data->output = data->input + 5;
+    xSemaphoreGive(response);
 }
 
 BaseType_t signal_request_calculate(SemaphoreHandle_t request, SemaphoreHandle_t response, struct signal_data *data)
 {
-    return (BaseType_t)0;
+    return xSemaphoreGive(request) && xSemaphoreTake(response, 10);
 }
